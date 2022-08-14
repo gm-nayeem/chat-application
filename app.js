@@ -8,7 +8,9 @@ const morgan = require('morgan')
 
 // internal imports
 const { notFoundHandler, errorHandler } = require('./middleware/common/errorHandler')
-
+const loginRoute = require('./routes/loginRoute')
+const usersRoute = require('./routes/usersRoute')
+const inboxRoute = require('./routes/inboxRoute')
 
 const app = express()
 const PORT = process.env.PORT
@@ -41,13 +43,9 @@ app.use(middleware)
 
 
 // routing setup
-
-app.get('/', (req, res) => {
-    res.json({
-        message: 'This is a chat-application project'
-    })
-
-})
+app.use('/', loginRoute)
+app.use('/users', usersRoute)
+app.use('/inbox', inboxRoute)
 
 // 404 not found
 app.use(notFoundHandler)

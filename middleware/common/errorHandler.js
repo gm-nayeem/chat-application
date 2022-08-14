@@ -6,7 +6,21 @@ exports.notFoundHandler = (req, res, next) => {
 }
 
 // common error handler
-exports.errorHandler = (error, req, res, next) => {
-    return res.render('pages/error/error')
+exports.errorHandler = (err, req, res, next) => {
+    res.locals.error = 
+        process.env.NODE_ENV === 'development' ? err : {message: err.message}
+    
+    res.status(err.status || 500)
+
+    if(res.locals.html) {
+        // html response
+        return res.render('pages/error/error', {
+            title: 'Error Page'
+        })
+    } else {
+        // json response
+        res.json(res.locals.error)
+    }
+    
 }
 
